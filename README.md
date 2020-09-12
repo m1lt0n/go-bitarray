@@ -7,10 +7,10 @@ Bit arrays are a compact, space efficient data structure that represent a group 
 ## Installation
 
 ```bash
-go get com.github/m1lt0n/go-bitarray
+go get github.com/m1lt0n/go-bitarray
 ```
 
-or add com.github/m1lt0n/go-bitarray to your module's dependencies.
+or add github.com/m1lt0n/go-bitarray to your module's dependencies.
 
 ## Usage
 
