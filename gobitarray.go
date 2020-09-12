@@ -15,7 +15,7 @@ type BitArray struct {
 
 // New : Create a new bit array of a specified size
 func New(size int) BitArray {
-	return BitArray{size: size, data: make([]byte, size / 8 + 1)}
+	return BitArray{size: size, data: make([]byte, size/8+1)}
 }
 
 // Set : set a specific position's bit. Returns the position of the bit set and an error
@@ -30,7 +30,7 @@ func (arr *BitArray) Set(position int) (int, error) {
 		return -1, err
 	}
 
-	arr.data[position / 8] = arr.data[position / 8] | (1 << (position % 8))
+	arr.data[position/8] = arr.data[position/8] | (1 << (position % 8))
 
 	return position, nil
 }
@@ -47,7 +47,7 @@ func (arr *BitArray) Unset(position int) (int, error) {
 		return -1, err
 	}
 
-	arr.data[position / 8] = arr.data[position / 8] & (255 ^ (1 << (position % 8)))
+	arr.data[position/8] = arr.data[position/8] & (255 ^ (1 << (position % 8)))
 
 	return position, nil
 }
@@ -64,7 +64,7 @@ func (arr *BitArray) Get(position int) (int, error) {
 		return -1, err
 	}
 
-  return arr.getBit(position), nil
+	return arr.getBit(position), nil
 }
 
 // Toggle : Toggles the value of a bit. Returns the new value of the bit and an error
@@ -79,7 +79,7 @@ func (arr *BitArray) Toggle(position int) (int, error) {
 		return -1, err
 	}
 
-	arr.data[position / 8] = arr.data[position / 8] ^ (1 << (position % 8))
+	arr.data[position/8] = arr.data[position/8] ^ (1 << (position % 8))
 
 	return arr.getBit(position), nil
 }
@@ -89,15 +89,15 @@ func (arr *BitArray) Reset() {
 	arr.mux.Lock()
 	defer arr.mux.Unlock()
 
-	arr.data = make([]byte, arr.size / 8 + 1)
+	arr.data = make([]byte, arr.size/8+1)
 }
 
 func (arr *BitArray) getBit(position int) int {
-	if arr.data[position / 8] & (1 << (position % 8)) > 0 {
-    return 1
-  } else {
-    return 0
-  }
+	if arr.data[position/8]&(1<<(position%8)) > 0 {
+		return 1
+	} else {
+		return 0
+	}
 }
 
 func ensurePosition(position int, size int) error {
@@ -107,4 +107,3 @@ func ensurePosition(position int, size int) error {
 		return nil
 	}
 }
-
