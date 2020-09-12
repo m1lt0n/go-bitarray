@@ -1,4 +1,4 @@
-module com.github/m1lt0n/go-bitarray
+module github.com/m1lt0n/go-bitarray
 
 go 1.14
 
