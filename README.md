@@ -1,6 +1,6 @@
 # go-bitarray
 
-Welcome to go-bitarray! go-bitarray is a go implementation of bit array that allows creating, querying, storing and restoring a bit array.
+Welcome to go-bitarray! go-bitarray is a go implementation of bit array that allows creating and querying a bit array.
 
 Bit arrays are a compact, space efficient data structure that represent a group of boolean values. A very common use is in probabilistic data structures (like Bloom filter).
 
