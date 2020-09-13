@@ -25,19 +25,19 @@ Some common operations on individual bits that go-bitarray supports:
 
 ```golang
 # set the 5th bit
-arr.Set(5)
+err := arr.Set(5)
 
 # get the 5th bit
-arr.Get(5)
+bitValue, err := arr.Get(5)
 
 # unset the 5th bit
-arr.Unset(5)
+err := arr.Unset(5)
 
 # toggle the value of the 10th bit
-arr.Toggle(10)
+newValue, err := arr.Toggle(10)
 ```
 
-The set and unset operations are idempotent, as the final state of the bit is the same. This is not the case with toggle, as it changes the bit value from 1 to 0 or 0 to 1.
+The set and unset operations are idempotent, as the final state of the bit is the same. This is not the case with toggle, as it changes the bit value from 1 to 0 or 0 to 1. The Set, Unset, Toggle and Get operations can be unsuccessful if the provided index is out of the range of the bit array. In this case, an IndexError is returned.
 
 Some operations that apply on the bit array itself:
 

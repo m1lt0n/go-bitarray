@@ -1,7 +1,6 @@
 package gobitarray
 
 import (
-	"errors"
 	"fmt"
 	"sync"
 )
@@ -13,43 +12,53 @@ type BitArray struct {
 	mux  sync.Mutex
 }
 
+// IndexError : Represents an index out of range error
+type IndexError struct {
+  position int
+  arraySize int
+}
+
+func (err *IndexError) Error() string {
+  return fmt.Sprintf("Provided position %d is out of range. Maximum allowed index is %d.", err.position, err.arraySize - 1)
+}
+
 // New : Create a new bit array of a specified size
 func New(size int) BitArray {
 	return BitArray{size: size, data: make([]byte, size/8+1)}
 }
 
-// Set : set a specific position's bit. Returns the position of the bit set and an error
+// Set : set a specific position's bit. Returns an error if unsuccessful
 // if the position provided is invalid
-func (arr *BitArray) Set(position int) (int, error) {
+func (arr *BitArray) Set(position int) error {
 	arr.mux.Lock()
 	defer arr.mux.Unlock()
 
 	err := ensurePosition(position, arr.size)
 
 	if err != nil {
-		return -1, err
+		return err
 	}
 
 	arr.data[position/8] = arr.data[position/8] | (1 << (position % 8))
 
-	return position, nil
+  return nil
 }
 
-// Unset : unset a specific position's bit. Returns the position of the bit unset and an error
+// Unset : unset a specific position's bit. Returns an error if unsuccessful
 // if the position provided is invalid
-func (arr *BitArray) Unset(position int) (int, error) {
+func (arr *BitArray) Unset(position int) error {
 	arr.mux.Lock()
 	defer arr.mux.Unlock()
 
 	err := ensurePosition(position, arr.size)
 
 	if err != nil {
-		return -1, err
+		return err
 	}
 
 	arr.data[position/8] = arr.data[position/8] & (255 ^ (1 << (position % 8)))
 
-	return position, nil
+	return nil
 }
 
 // Get : Get the value of a bit. Returns the value of the bit and an error
@@ -102,7 +111,7 @@ func (arr *BitArray) getBit(position int) int {
 
 func ensurePosition(position int, size int) error {
 	if position >= size {
-		return errors.New(fmt.Sprintf("Provided position %d exceeds it array's max index %d", position, size-1))
+		return &IndexError{position, size}
 	} else {
 		return nil
 	}
