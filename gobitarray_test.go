@@ -1,8 +1,9 @@
 package gobitarray
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSetGet(t *testing.T) {

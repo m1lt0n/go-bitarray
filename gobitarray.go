@@ -9,17 +9,17 @@ import (
 type BitArray struct {
 	size int
 	data []byte
-	mux  sync.Mutex
+	mux  sync.RWMutex
 }
 
 // IndexError : Represents an index out of range error
 type IndexError struct {
-  position int
-  arraySize int
+	position  int
+	arraySize int
 }
 
 func (err *IndexError) Error() string {
-  return fmt.Sprintf("Provided position %d is out of range. Maximum allowed index is %d.", err.position, err.arraySize - 1)
+	return fmt.Sprintf("Provided position %d is out of range. Maximum allowed index is %d.", err.position, err.arraySize-1)
 }
 
 // New : Create a new bit array of a specified size
@@ -41,7 +41,7 @@ func (arr *BitArray) Set(position int) error {
 
 	arr.data[position/8] = arr.data[position/8] | (1 << (position % 8))
 
-  return nil
+	return nil
 }
 
 // Unset : unset a specific position's bit. Returns an error if unsuccessful
@@ -56,7 +56,7 @@ func (arr *BitArray) Unset(position int) error {
 		return err
 	}
 
-	arr.data[position/8] = arr.data[position/8] & (255 ^ (1 << (position % 8)))
+	arr.data[position/8] = arr.data[position/8] & ^(1 << (position % 8))
 
 	return nil
 }
@@ -104,15 +104,15 @@ func (arr *BitArray) Reset() {
 func (arr *BitArray) getBit(position int) int {
 	if arr.data[position/8]&(1<<(position%8)) > 0 {
 		return 1
-	} else {
-		return 0
 	}
+
+	return 0
 }
 
 func ensurePosition(position int, size int) error {
 	if position >= size {
 		return &IndexError{position, size}
-	} else {
-		return nil
 	}
+
+	return nil
 }
